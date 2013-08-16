@@ -70,6 +70,8 @@ Wiretap Profiler and Wiretap Viewer are based on the [SFML library](http://sfml-
 
 There are many more features planned including profiling for other languages, see TODO.txt.
 
+You can also check the [FAQ](FAQ.md) or send me an email.
+
 ## ISC License
 
 https://github.com/shazbits/wiretap/blob/master/LICENSE.txt
