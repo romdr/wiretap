@@ -1,0 +1,23 @@
+TODO:
+- Use mutex instead of framerate limit, now can skip frames because only 1 m_Frame instead of vector, might screw up pollevents
+- Move up and down on functions
+- Align functions/timings
+- Expand/collapse function
+- Cleanup includes, common, output dir
+- Use icon (executable, taskbar)
+- Push to github
+
+- Reconnect automatically (background thread maybe? so it's not blocking like netdebuglog)
+- Scroll left/right entire view when reaching 1st/last frames
+- Display standard deviation line and text
+- Horizontal scale tweakable (1 second by default, can zoom out)
+- Mouse scroll / shift + mouse scroll to zoom in/out height and frames rendered
+- Update m_WindowWidth/Height when resizing the window
+- Key to take screenshot
+- Key to save entire dump
+- Key to load dump
+- Move colors to constants (default, later can override colors with config file)
+- Handle multi-threading (at least thread id, one buffer/output per thread)
+- Display stats: most expensive function, most expensive function taking into account the calls count, most variable function, etc.
+- Linux compatibility (makefile, etc.)
+- Python and C# port of the profiler api

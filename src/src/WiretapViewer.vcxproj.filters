@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{f446e43f-d8ad-4a83-8e6b-66e9082a9c66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ProfileViewer">
+      <UniqueIdentifier>{e6a56e05-ce12-49ef-99ac-17047b202d42}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Common\WiretapUtils.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="ProfileViewer\main.cpp">
+      <Filter>ProfileViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="ProfileViewer\WiretapViewer.cpp">
+      <Filter>ProfileViewer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common\WiretapUtils.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ProfileViewer\WiretapViewer.h">
+      <Filter>ProfileViewer</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
