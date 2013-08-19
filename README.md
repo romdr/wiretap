@@ -68,13 +68,13 @@ Everything updates in real-time but it's possible to pause the display (press sp
 
 Wiretap Profiler and Wiretap Viewer are based on the [SFML library](http://sfml-dev.org) and currently developped on Windows 7 with support for Visual Studio 2008 and 2012. The choice of this library is to make it portable easily. Linux/unix makefile soon.
 
-There are many more features planned including profiling for other languages, see TODO.txt.
+There are many more features planned including profiling for other languages, see [TODO](TODO.txt).
 
 You can also check the [FAQ](FAQ.md) or send me an email.
 
 ## ISC License
 
-https://github.com/shazbits/wiretap/blob/master/LICENSE.txt
+[LICENSE](LICENSE.txt)
 
 Romain Dura
 

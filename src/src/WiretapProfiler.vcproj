@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="Common;&quot;..\external\sfml-2.0-win32\include&quot;"
+				AdditionalIncludeDirectories="Common;&quot;..\external\sfml-2.1-windows-vc9-32bits\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;SFML_STATIC;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="sfml-system-s-d.lib sfml-network-s-d.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;..\external\sfml-2.0-win32\lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\external\sfml-2.1-windows-vc9-32bits\lib&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
