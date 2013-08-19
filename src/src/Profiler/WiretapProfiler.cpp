@@ -59,18 +59,21 @@ void Profiler::_SendData(const char* viewerIPAddress /* = "127.0.0.1" */,  unsig
 	static sf::TcpSocket socket;
 	static sf::Socket::Status socketStatus = sf::Socket::Error;
 
-	if (socketStatus != sf::Socket::Done)
+	if (socketStatus == sf::Socket::Disconnected || socketStatus == sf::Socket::Error)
 	{
+		socket.disconnect();
+		socket.setBlocking(false);
 		socketStatus = socket.connect(viewerIPAddress, viewerPort);
+		socket.setBlocking(true);
 	}
-	if (socketStatus == sf::Socket::Done)
+	if (socketStatus == sf::Socket::Done || socketStatus == sf::Socket::NotReady)
 	{
-		for (unsigned int i = 0; i < m_Events.size(); i++)
+		for (unsigned int i = 0; i < m_Events.size() && (socketStatus == sf::Socket::Done || socketStatus == sf::Socket::NotReady); i++)
 		{
 			const ProfileEvent& profileEvent = m_Events[i];
 			sf::Packet packet;
 			packet << profileEvent.GetTime() << profileEvent.GetName() << (unsigned int)profileEvent.GetType();
-			socket.send(packet);
+			socketStatus = socket.send(packet);
 		}
 
 		m_Events.clear();
