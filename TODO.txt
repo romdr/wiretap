@@ -5,9 +5,6 @@ TODO:
 - Expand/collapse function
 - Cleanup includes, common, output dir
 - Use icon (executable, taskbar)
-- Push to github
-
-- Reconnect automatically (background thread maybe? so it's not blocking like netdebuglog)
 - Scroll left/right entire view when reaching 1st/last frames
 - Display standard deviation line and text
 - Horizontal scale tweakable (1 second by default, can zoom out)

@@ -13,11 +13,11 @@ using namespace Wiretap;
 ** Profiler utils
 */
 
-std::string Wiretap::GetTabs(unsigned int nbTabs)
+std::string Wiretap::GetIndent(unsigned int indentationLevel)
 {
 	std::string tabs = "";
-	for (unsigned int i = 0; i < nbTabs; i++)
-		tabs += "\t";
+	for (unsigned int i = 0; i < indentationLevel; i++)
+		tabs += "  ";
 	return tabs;
 }
 
@@ -33,12 +33,12 @@ void Wiretap::DumpEvents(const std::vector<ProfileEvent>& events, std::ostringst
 
 		if (profileEvent.GetType() == ProfileEvent_Start)
 		{
-			const std::string tabs = GetTabs(eventDepth);
+			const std::string tabs = GetIndent(eventDepth);
 			eventDepth += 1;
 			if (outStr)
-				(*outStr) << tabs.c_str() << profileEvent.GetName() << ", time: " << profileEvent.GetDuration() << "\n";
+				(*outStr) << tabs.c_str() << profileEvent.GetName() << " - " << profileEvent.GetDuration() << "s\n";
 			else
-				printf("%s%s, time: %f\n", tabs.c_str(), profileEvent.GetName(), profileEvent.GetDuration());
+				printf("%s%s - %fs\n", tabs.c_str(), profileEvent.GetName(), profileEvent.GetDuration());
 		}
 		else
 		{

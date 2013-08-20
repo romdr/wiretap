@@ -54,6 +54,9 @@ void ProfileViewer::Start()
 	m_Window.create(sf::VideoMode(m_WindowWidth, m_WindowHeight, 32), m_WindowTitle);
 	m_Window.setFramerateLimit(30); // hack, need mutex, see todo
 	m_Window.setKeyRepeatEnabled(false);
+	m_Window.clear(sf::Color(166, 178, 179));
+	m_Window.display();
+
 	m_ServerThread.launch();
 }
 
@@ -94,12 +97,12 @@ void ProfileViewer::HandleEvents()
 			{
 				m_UpdatePaused = !m_UpdatePaused;
 			}
-			else if (event.key.code == sf::Keyboard::Left)
+			else if (event.key.code == sf::Keyboard::P)
 			{
 				if (m_SelectedFrameOffset < m_FrameRangeStop + 1)
 					m_SelectedFrameOffset++;
 			}
-			else if (event.key.code == sf::Keyboard::Right)
+			else if (event.key.code == sf::Keyboard::N)
 			{
 				if (m_SelectedFrameOffset > 0)
 					m_SelectedFrameOffset--;
@@ -234,7 +237,7 @@ void ProfileViewer::DrawOverlay()
 {
 	// Controls
 	std::ostringstream outstrMenu;
-	outstrMenu << "[SPACE] Pause/Resume | [R] Reset min/max/average | [Left/Right] Previous/Next frame";
+	outstrMenu << "[SPACE] Pause/Resume | [R]eset min/max/average | [P]revious / [N]ext frame";
 	m_MenuControlsText.setString(outstrMenu.str());
 
 	// Current frame number and duration

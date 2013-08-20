@@ -36,7 +36,7 @@ namespace Wiretap
 		double				m_Duration;
 	};
 
-	std::string GetTabs(unsigned int nbTabs);
+	std::string GetIndent(unsigned int indentationLevel);
 	double ParseEvents(std::vector<ProfileEvent>& events);
 	void DumpEvents(const std::vector<ProfileEvent>& events, std::ostringstream* outStr = NULL);
 	double GetHiResTime();

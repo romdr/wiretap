@@ -10,7 +10,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 int main(int arc, char** arv)
 #endif
 {
-	Wiretap::ProfileViewer profileViewer(1024, 576, "Realtime Profile Viewer", 13001);
+	Wiretap::ProfileViewer profileViewer(1024, 576, "Wiretap", 13001);
 
 	profileViewer.Start();
 

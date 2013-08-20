@@ -68,12 +68,16 @@ void Profiler::_SendData(const char* viewerIPAddress /* = "127.0.0.1" */,  unsig
 	}
 	if (socketStatus == sf::Socket::Done || socketStatus == sf::Socket::NotReady)
 	{
-		for (unsigned int i = 0; i < m_Events.size() && (socketStatus == sf::Socket::Done || socketStatus == sf::Socket::NotReady); i++)
+		for (unsigned int i = 0; i < m_Events.size(); i++)
 		{
 			const ProfileEvent& profileEvent = m_Events[i];
 			sf::Packet packet;
 			packet << profileEvent.GetTime() << profileEvent.GetName() << (unsigned int)profileEvent.GetType();
 			socketStatus = socket.send(packet);
+
+			// If this event could be sent, don't try to send more. It happens if there is no host listening (we still try to send once because we're using non-blocking connect)
+			if (socketStatus == sf::Socket::Error || socketStatus == sf::Socket::Disconnected)
+				break;
 		}
 
 		m_Events.clear();
