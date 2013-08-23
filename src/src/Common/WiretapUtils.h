@@ -3,6 +3,7 @@
 #define __WIRETAP_UTILS_H__
 
 #include <vector>
+#include <unordered_set>
 
 namespace Wiretap
 {
@@ -36,9 +37,12 @@ namespace Wiretap
 		double				m_Duration;
 	};
 
+	typedef std::unordered_set<std::string> UnorderedStringSet;
+	typedef std::vector<std::string>		StringArray;
+
 	std::string GetIndent(unsigned int indentationLevel);
 	double ParseEvents(std::vector<ProfileEvent>& events);
-	void DumpEvents(const std::vector<ProfileEvent>& events, std::ostringstream* outStr = NULL);
+	void DumpEvents(const std::vector<ProfileEvent>& events, std::ostringstream* outStr = NULL, StringArray* eventNames = NULL, UnorderedStringSet* expandedEventNames = NULL);
 	double GetHiResTime();
 }
 

@@ -101,6 +101,11 @@ namespace Wiretap
 		unsigned int		m_SelectedFrameOffset;
 		bool				m_UpdatePaused;
 
+		// Viewer expand/collapse events
+		UnorderedStringSet	m_ExpandedEventNames;
+		StringArray			m_SelectedFrameEventNames;
+		unsigned int		m_SelectedEventIndex;
+
 		// Viewer - Overlay
 		sf::Vertex			m_FrameLimitVertices[2];
 		sf::Vertex			m_FrameMinVertices[2];

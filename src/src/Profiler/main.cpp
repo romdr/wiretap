@@ -52,6 +52,12 @@ void DoTask2()
 void DoTask2A()
 {
 	PROFILE_SCOPE(DoTask2A);
+
+	{
+		PROFILE_SCOPE(DoTask2Aa);
+		Sleep(5 + rand() % 3);
+	}
+
 	Sleep(5 + rand() % 3);
 }
 

@@ -23,6 +23,7 @@ ProfileViewer::ProfileViewer(unsigned int windowWidth, unsigned int windowHeight
 , m_SelectedFrameOffset(0)
 , m_UpdatePaused(false)
 , m_ServerThreadIsRunning(false)
+, m_SelectedEventIndex(0)
 {
 	m_Instance = this;
 	m_Font.loadFromFile("consolas.ttf");
@@ -88,11 +89,14 @@ void ProfileViewer::HandleEvents()
 		}
 		else if (event.type == sf::Event::KeyPressed)
 		{
+			// Overlay
 			if (event.key.code == sf::Keyboard::R)
 			{
 				m_MinFrame.Invalidate();
 				m_MaxFrame.Invalidate();
 			}
+
+			// Pause, resume, previous, next
 			else if (event.key.code == sf::Keyboard::Space)
 			{
 				m_UpdatePaused = !m_UpdatePaused;
@@ -106,6 +110,28 @@ void ProfileViewer::HandleEvents()
 			{
 				if (m_SelectedFrameOffset > 0)
 					m_SelectedFrameOffset--;
+			}
+
+			// Expand, collapse events
+			else if (event.key.code == sf::Keyboard::Left)
+			{
+				m_ExpandedEventNames.erase(m_SelectedFrameEventNames[m_SelectedEventIndex]);
+			}
+			else if (event.key.code == sf::Keyboard::Right)
+			{
+				m_ExpandedEventNames.insert(m_SelectedFrameEventNames[m_SelectedEventIndex]);
+			}
+
+			// Move up/down events
+			else if (event.key.code == sf::Keyboard::Up)
+			{
+				if (m_SelectedEventIndex > 0)
+					m_SelectedEventIndex--;
+			}
+			else if (event.key.code == sf::Keyboard::Down)
+			{
+				if (m_SelectedEventIndex < m_SelectedFrameEventNames.size() - 1)
+					m_SelectedEventIndex++;
 			}
 		}
 	}
@@ -127,7 +153,7 @@ void ProfileViewer::Render()
 	m_FrameRectHeightMultiplier = (m_WindowHeight / 2.0f) / m_HalfScreenHeightTimeMs;
 
 	// Update / render
-	if (newFrame.IsValid())
+	if (newFrame.IsValid()) // todo: add || overlayUpdated
 	{
 		m_FramesSinceBeginning.push_back(newFrame);
 
@@ -250,8 +276,28 @@ void ProfileViewer::DrawOverlay()
 	// Display the timed scopes
 	std::ostringstream strEvents;
 	ProfileEventList frameEvents = currentFrame.GetEvents();
-	DumpEvents(frameEvents, &strEvents);
+
+	// The optional arguments are for:
+	//  - (output) the entire output string, events properly indented
+	//  - (output) a list of the visible event names (1 per line)
+	//  - (input)  a set of event names to expand and display sub events
+	// It's a bit ugly, mixing input/output and tons of optional arguments, maybe worth overloading the function to avoid pointers
+	m_SelectedFrameEventNames.clear();
+	DumpEvents(frameEvents, &strEvents, &m_SelectedFrameEventNames, &m_ExpandedEventNames);
+
+	// Make sure we don't get the selected event out of bounds
+	if (m_SelectedEventIndex >= m_SelectedFrameEventNames.size())
+		m_SelectedEventIndex = m_SelectedFrameEventNames.size();
+
 	m_FrameEventsText.setString(strEvents.str());
+
+	// Display selected event box (TODO: set as member variable to avoid creating, setting size/color/etc. all the time)
+	sf::RectangleShape selectedEventRect;
+	selectedEventRect.setSize(sf::Vector2f(m_WindowWidth * 0.333f, 14.0f));
+	selectedEventRect.setPosition(m_FrameEventsText.getPosition() + sf::Vector2f(0.0f, 1.0f + m_SelectedEventIndex * 14.0f));
+	selectedEventRect.setFillColor(sf::Color::White);
+	selectedEventRect.setOutlineThickness(1.0f);
+	selectedEventRect.setOutlineColor(sf::Color(32, 91, 92));
 
 	// Frame limit line (above this line is a 'slow' frame
 	std::ostringstream outstrLimit;
@@ -260,6 +306,7 @@ void ProfileViewer::DrawOverlay()
 	m_FrameLimitText.setPosition(0.0f, m_FrameLimitVertices[0].position.y + m_LineTextVerticalOffset);
 
 	m_Window.draw(m_MenuControlsText);
+	m_Window.draw(selectedEventRect);
 	m_Window.draw(m_FrameInfoText);
 	m_Window.draw(m_FrameEventsText);
 

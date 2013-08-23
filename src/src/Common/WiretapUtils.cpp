@@ -21,10 +21,13 @@ std::string Wiretap::GetIndent(unsigned int indentationLevel)
 	return tabs;
 }
 
-void Wiretap::DumpEvents(const std::vector<ProfileEvent>& events, std::ostringstream* outStr /* = NULL */)
+void Wiretap::DumpEvents(const std::vector<ProfileEvent>& events, std::ostringstream* outStr /* = NULL */, StringArray* eventNames /* = NULL */, UnorderedStringSet* expandedEventNames /* = NULL */)
 {
 	unsigned int eventIndex = 0;
 	unsigned int eventDepth = 0;
+
+	bool isEventExpanded = true;
+	std::string collapsedEventName;
 
 	while (eventIndex < events.size())
 	{
@@ -33,16 +36,36 @@ void Wiretap::DumpEvents(const std::vector<ProfileEvent>& events, std::ostringst
 
 		if (profileEvent.GetType() == ProfileEvent_Start)
 		{
-			const std::string tabs = GetIndent(eventDepth);
-			eventDepth += 1;
-			if (outStr)
-				(*outStr) << tabs.c_str() << profileEvent.GetName() << " - " << profileEvent.GetDuration() << "s\n";
-			else
-				printf("%s%s - %fs\n", tabs.c_str(), profileEvent.GetName(), profileEvent.GetDuration());
+			if (isEventExpanded)
+			{
+				const std::string tabs = GetIndent(eventDepth);
+				eventDepth += 1;
+				if (outStr)
+					(*outStr) << tabs.c_str() << profileEvent.GetName() << " - " << profileEvent.GetDuration() << "s\n";
+				else
+					printf("%s%s - %fs\n", tabs.c_str(), profileEvent.GetName(), profileEvent.GetDuration());
+
+				if (eventNames)
+					eventNames->push_back(profileEvent.GetName());
+			}
+			
+			if (isEventExpanded && expandedEventNames && expandedEventNames->find(profileEvent.GetName()) == expandedEventNames->end())
+			{
+				isEventExpanded = false;
+				collapsedEventName = profileEvent.GetName();
+			}
 		}
 		else
 		{
-			eventDepth -= 1;
+			if (isEventExpanded)
+			{
+				eventDepth -= 1;
+			}
+			else if (collapsedEventName == profileEvent.GetName())
+			{
+				eventDepth -= 1;
+				isEventExpanded = true;
+			}
 		}
 	}
 }
