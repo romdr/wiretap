@@ -88,6 +88,10 @@ void Profiler::_SendData(const char* viewerIPAddress /* = "127.0.0.1" */,  unsig
 void Profiler::DumpEvents()
 {
 	GetInstance()._DumpEvents();
+
+	static unsigned int frameCount = 0;
+	frameCount++;
+	printf("FrameCount: %d\n", frameCount);
 }
 
 void Profiler::_DumpEvents()

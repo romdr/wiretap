@@ -42,12 +42,21 @@ ProfileViewer::ProfileViewer(unsigned int windowWidth, unsigned int windowHeight
 	m_FrameAverageVertices[1] = sf::Vertex(sf::Vector2f((float)m_WindowWidth, 0.0f), sf::Color(32, 91, 92));
 
 	SetTextDefault(m_MenuControlsText, 0.0f, 0.0f, sf::Color::White, 12);
-	SetTextDefault(m_FrameInfoText, m_WindowWidth - 175.0f, 0.0f, sf::Color::White, 12);
+	SetTextDefault(m_FrameInfoText, m_WindowWidth - 200.0f, 0.0f, sf::Color::White, 12);
 	SetTextDefault(m_FrameLimitText, 0.0f, m_FrameLimitVertices[0].position.y + m_LineTextVerticalOffset, m_FrameLimitVertices[0].color, 12);
 	SetTextDefault(m_FrameMinText, 0.0f, m_FrameMinVertices[0].position.y + m_LineTextVerticalOffset, m_FrameMinVertices[0].color, 12);
 	SetTextDefault(m_FrameMaxText, 0.0f, m_FrameMaxVertices[0].position.y + m_LineTextVerticalOffset, m_FrameMaxVertices[0].color, 12);
 	SetTextDefault(m_FrameAverageText, 0.0f, m_FrameAverageVertices[0].position.y + m_LineTextVerticalOffset, m_FrameAverageVertices[0].color, 12);
 	SetTextDefault(m_FrameEventsText, 50.0f, 24.0f, sf::Color(32, 91, 92), 12);
+
+	// Controls
+	std::ostringstream outstrMenu;
+	outstrMenu << "[SPACE] Pause/Resume | [R]eset min/max/average | [P]revious / [N]ext frame";
+	m_MenuControlsText.setString(outstrMenu.str());
+
+	m_SelectedEventRect.setFillColor(sf::Color::White);
+	m_SelectedEventRect.setOutlineThickness(1.0f);
+	m_SelectedEventRect.setOutlineColor(sf::Color(32, 91, 92));
 }
 
 void ProfileViewer::Start()
@@ -116,22 +125,30 @@ void ProfileViewer::HandleEvents()
 			else if (event.key.code == sf::Keyboard::Left)
 			{
 				m_ExpandedEventNames.erase(m_SelectedFrameEventNames[m_SelectedEventIndex]);
+				m_OverlayEventsUpdated = true;
 			}
 			else if (event.key.code == sf::Keyboard::Right)
 			{
 				m_ExpandedEventNames.insert(m_SelectedFrameEventNames[m_SelectedEventIndex]);
+				m_OverlayEventsUpdated = true;
 			}
 
 			// Move up/down events
 			else if (event.key.code == sf::Keyboard::Up)
 			{
 				if (m_SelectedEventIndex > 0)
+				{
 					m_SelectedEventIndex--;
+					m_OverlayEventsUpdated = true;
+				}
 			}
 			else if (event.key.code == sf::Keyboard::Down)
 			{
 				if (m_SelectedEventIndex < m_SelectedFrameEventNames.size() - 1)
+				{
 					m_SelectedEventIndex++;
+					m_OverlayEventsUpdated = true;
+				}
 			}
 		}
 	}
@@ -139,23 +156,24 @@ void ProfileViewer::HandleEvents()
 
 void ProfileViewer::Render()
 {
-	// Copy the new frame
+	// Copy the new frames
 	ProfileFrame newFrame;
 
 	m_ServerMutex.lock();
-	if (m_Frame.IsValid())
+	if (!m_FramesFromNetwork.empty())
 	{
-		newFrame = m_Frame;
-		m_Frame.Invalidate();
+		m_FramesSinceBeginning.insert(m_FramesSinceBeginning.end(), m_FramesFromNetwork.begin(), m_FramesFromNetwork.end());
+		m_FramesFromNetwork.clear();
+		newFrame = m_FramesSinceBeginning.back();
 	}
 	m_ServerMutex.unlock();
 
 	m_FrameRectHeightMultiplier = (m_WindowHeight / 2.0f) / m_HalfScreenHeightTimeMs;
 
 	// Update / render
-	if (newFrame.IsValid()) // todo: add || overlayUpdated
+	if (newFrame.IsValid() || m_OverlayEventsUpdated)
 	{
-		m_FramesSinceBeginning.push_back(newFrame);
+		m_OverlayEventsUpdated = false;
 
 		if (!m_UpdatePaused)
 		{
@@ -261,16 +279,14 @@ void ProfileViewer::DrawLastFrames()
 
 void ProfileViewer::DrawOverlay()
 {
-	// Controls
-	std::ostringstream outstrMenu;
-	outstrMenu << "[SPACE] Pause/Resume | [R]eset min/max/average | [P]revious / [N]ext frame";
-	m_MenuControlsText.setString(outstrMenu.str());
-
 	// Current frame number and duration
 	std::ostringstream outstrInfo;
 	const unsigned int currentFrameNumber = m_FrameRangeStop - m_SelectedFrameOffset;
 	const ProfileFrame& currentFrame = m_SelectedFrameOffset ? m_FramesSinceBeginning[currentFrameNumber - 1] : m_CurrentFrame;
-	outstrInfo << "Frame " << currentFrameNumber << " (" << currentFrame.GetLength() * 1000.0f << "ms)";
+	if (m_UpdatePaused)
+		outstrInfo << "Frame " << currentFrameNumber << " / " << m_FramesSinceBeginning.size() << " (" << currentFrame.GetLength() * 1000.0f << "ms)";
+	else
+		outstrInfo << "Frame " << currentFrameNumber << " (" << currentFrame.GetLength() * 1000.0f << "ms)";
 	m_FrameInfoText.setString(outstrInfo.str());
 
 	// Display the timed scopes
@@ -291,14 +307,10 @@ void ProfileViewer::DrawOverlay()
 
 	m_FrameEventsText.setString(strEvents.str());
 
-	// Display selected event box (TODO: set as member variable to avoid creating, setting size/color/etc. all the time)
-	sf::RectangleShape selectedEventRect;
-	selectedEventRect.setSize(sf::Vector2f(m_WindowWidth * 0.333f, 14.0f));
-	selectedEventRect.setPosition(m_FrameEventsText.getPosition() + sf::Vector2f(0.0f, 1.0f + m_SelectedEventIndex * 14.0f));
-	selectedEventRect.setFillColor(sf::Color::White);
-	selectedEventRect.setOutlineThickness(1.0f);
-	selectedEventRect.setOutlineColor(sf::Color(32, 91, 92));
-
+	// Display selected event box
+	m_SelectedEventRect.setSize(sf::Vector2f(m_WindowWidth * 0.333f, 14.0f));
+	m_SelectedEventRect.setPosition(m_FrameEventsText.getPosition() + sf::Vector2f(0.0f, 1.0f + m_SelectedEventIndex * 14.0f));
+	
 	// Frame limit line (above this line is a 'slow' frame
 	std::ostringstream outstrLimit;
 	outstrLimit << "Limit " << m_HalfScreenHeightTimeMs << "ms";
@@ -306,7 +318,7 @@ void ProfileViewer::DrawOverlay()
 	m_FrameLimitText.setPosition(0.0f, m_FrameLimitVertices[0].position.y + m_LineTextVerticalOffset);
 
 	m_Window.draw(m_MenuControlsText);
-	m_Window.draw(selectedEventRect);
+	m_Window.draw(m_SelectedEventRect);
 	m_Window.draw(m_FrameInfoText);
 	m_Window.draw(m_FrameEventsText);
 
@@ -392,8 +404,9 @@ void ProfileViewer::HandleNetworkData(sf::Packet& packet)
 		// If moving this code, make sure to call ParseEvents before creating the Frame so each Start event has a duration calculated
 		ParseEvents(m_EventsFromNetwork);
 
+		// We're using a vector instead of a single frame because we might not render at the same rate as we receive frames and don't want to miss some
 		m_ServerMutex.lock();
-		m_Frame = ProfileFrame(frameLength, m_EventsFromNetwork);
+		m_FramesFromNetwork.push_back(ProfileFrame(frameLength, m_EventsFromNetwork));
 		m_ServerMutex.unlock();
 
 		m_EventsFromNetwork.clear();

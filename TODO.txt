@@ -1,8 +1,5 @@
 TODO:
-- Use mutex instead of framerate limit, now can skip frames because only 1 m_Frame instead of vector, might screw up pollevents
-- Move up and down on functions
 - Align functions/timings
-- Expand/collapse function
 - Cleanup includes, common, output dir
 - Use icon (executable, taskbar)
 - Scroll left/right entire view when reaching 1st/last frames

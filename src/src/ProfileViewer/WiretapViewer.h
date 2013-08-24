@@ -72,7 +72,7 @@ namespace Wiretap
 		sf::Thread			m_ServerThread;
 		sf::Mutex			m_ServerMutex;
 		ProfileEventList 	m_EventsFromNetwork;
-		ProfileFrame		m_Frame;
+		ProfileFrameList	m_FramesFromNetwork;
 		unsigned short		m_Port;
 
 		// Render thread
@@ -105,8 +105,10 @@ namespace Wiretap
 		UnorderedStringSet	m_ExpandedEventNames;
 		StringArray			m_SelectedFrameEventNames;
 		unsigned int		m_SelectedEventIndex;
+		bool				m_OverlayEventsUpdated;
 
 		// Viewer - Overlay
+		sf::RectangleShape	m_SelectedEventRect;
 		sf::Vertex			m_FrameLimitVertices[2];
 		sf::Vertex			m_FrameMinVertices[2];
 		sf::Vertex			m_FrameMaxVertices[2];
