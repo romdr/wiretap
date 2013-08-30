@@ -49,6 +49,7 @@ namespace Wiretap
 		void Stop();
 		void Update();
 		bool IsOpen() const { return m_Window.isOpen(); }
+		sf::WindowHandle GetWindowHandle() const { return m_Window.getSystemHandle(); }
 
 	private:
 		void HandleEvents();

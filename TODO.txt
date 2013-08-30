@@ -1,7 +1,5 @@
 TODO:
 - Align functions/timings
-- Cleanup includes, common, output dir
-- Use icon (executable, taskbar)
 - Scroll left/right entire view when reaching 1st/last frames
 - Display standard deviation line and text
 - Horizontal scale tweakable (1 second by default, can zoom out)

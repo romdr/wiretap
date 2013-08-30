@@ -37,7 +37,11 @@ namespace Wiretap
 		double				m_Duration;
 	};
 
+#if !defined(_MSC_VER) || _MSC_VER > 1500
 	typedef std::unordered_set<std::string> UnorderedStringSet;
+#else
+	typedef std::tr1::unordered_set<std::string> UnorderedStringSet;
+#endif
 	typedef std::vector<std::string>		StringArray;
 
 	std::string GetIndent(unsigned int indentationLevel);

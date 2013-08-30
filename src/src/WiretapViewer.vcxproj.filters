@@ -26,5 +26,12 @@
     <ClInclude Include="ProfileViewer\WiretapViewer.h">
       <Filter>ProfileViewer</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WiretapViewer.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\wiretap.ico" />
   </ItemGroup>
 </Project>

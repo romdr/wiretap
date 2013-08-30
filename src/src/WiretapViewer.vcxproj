@@ -42,13 +42,13 @@
     <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>../output/$(ProjectName)/$(Configuration)\</OutDir>
-    <IntDir>../temp/$(ProjectName)/$(Configuration)\</IntDir>
+    <OutDir>../output/$(ProjectName)/$(PLATFORM)/$(Configuration)\</OutDir>
+    <IntDir>../temp/$(ProjectName)/$(PLATFORM)/$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>../output/$(Configuration)\</OutDir>
-    <IntDir>../temp/$(Configuration)\</IntDir>
+    <OutDir>../output/$(ProjectName)/$(PLATFORM)/$(Configuration)\</OutDir>
+    <IntDir>../temp/$(ProjectName)/$(PLATFORM)/$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -75,7 +75,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>Common;..\external\sfml-2.1-windows-vc11-32bits\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;SFML_STATIC;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -85,6 +85,8 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <AdditionalDependencies>sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;sfml-network-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -104,6 +106,13 @@
   <ItemGroup>
     <ClInclude Include="Common\WiretapUtils.h" />
     <ClInclude Include="ProfileViewer\WiretapViewer.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WiretapViewer.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\wiretap.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
