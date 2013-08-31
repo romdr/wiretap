@@ -62,7 +62,7 @@ ProfileViewer::ProfileViewer(unsigned int windowWidth, unsigned int windowHeight
 void ProfileViewer::Start()
 {
 	m_Window.create(sf::VideoMode(m_WindowWidth, m_WindowHeight, 32), m_WindowTitle);
-	m_Window.setFramerateLimit(30); // hack, need mutex, see todo
+	m_Window.setFramerateLimit(30);
 	m_Window.setKeyRepeatEnabled(false);
 	m_Window.clear(sf::Color(166, 178, 179));
 	m_Window.display();
@@ -112,13 +112,41 @@ void ProfileViewer::HandleEvents()
 			}
 			else if (event.key.code == sf::Keyboard::P)
 			{
-				if (m_SelectedFrameOffset < m_FrameRangeStop + 1)
-					m_SelectedFrameOffset++;
+				if (m_SelectedFrameOffset < m_FrameRangeStop - 1)
+				{
+					// Scroll to the left if we had reached the 1st frame in the visible range
+					if (m_FrameRangeStart > 0 && m_FrameRangeStop - (m_SelectedFrameOffset + 2) < m_FrameRangeStart)
+					{
+						m_FrameRangeStart--;
+						m_FrameRangeStop--;
+					}
+					else
+					{
+						// Or move the selected frame to the left
+						m_SelectedFrameOffset++;
+					}
+
+					m_OverlayEventsUpdated = true;
+				}
 			}
 			else if (event.key.code == sf::Keyboard::N)
 			{
+				// Move the selected frame to the right
 				if (m_SelectedFrameOffset > 0)
+				{
 					m_SelectedFrameOffset--;
+				}
+				else
+				{
+					// Or scroll to the right if we had reached the last frame in the visible range
+					if (m_FrameRangeStop < m_FramesSinceBeginning.size())
+					{
+						m_FrameRangeStart++;
+						m_FrameRangeStop++;
+					}
+				}
+
+				m_OverlayEventsUpdated = true;
 			}
 
 			// Expand, collapse events
@@ -175,7 +203,7 @@ void ProfileViewer::Render()
 	{
 		m_OverlayEventsUpdated = false;
 
-		if (!m_UpdatePaused)
+		if (!m_UpdatePaused && newFrame.IsValid())
 		{
 			m_CurrentFrame = newFrame;
 			m_FrameRangeStart = (unsigned int)max((int)m_FramesSinceBeginning.size() - (int)m_NbFramesToDisplay, 0);
@@ -251,6 +279,7 @@ void ProfileViewer::UpdateAverage()
 void ProfileViewer::DrawLastFrames()
 {
 	sf::RectangleShape selectedRect;
+
 	for (unsigned int i = m_FrameRangeStart, j = 0; i < m_FrameRangeStop; i++, j++)
 	{
 		const float frameLengthMs = m_FramesSinceBeginning[i].GetLength() * 1000.0f;
@@ -282,7 +311,8 @@ void ProfileViewer::DrawOverlay()
 	// Current frame number and duration
 	std::ostringstream outstrInfo;
 	const unsigned int currentFrameNumber = m_FrameRangeStop - m_SelectedFrameOffset;
-	const ProfileFrame& currentFrame = m_SelectedFrameOffset ? m_FramesSinceBeginning[currentFrameNumber - 1] : m_CurrentFrame;
+	const unsigned int currentFrameIdx = currentFrameNumber ? currentFrameNumber - 1 : currentFrameNumber;
+	const ProfileFrame& currentFrame = m_SelectedFrameOffset ? m_FramesSinceBeginning[currentFrameIdx] : m_CurrentFrame;
 	if (m_UpdatePaused)
 		outstrInfo << "Frame " << currentFrameNumber << " / " << m_FramesSinceBeginning.size() << " (" << currentFrame.GetLength() * 1000.0f << "ms)";
 	else

@@ -15,7 +15,7 @@ int main(int arc, char** arv)
 
 	profileViewer.Start();
 
-	// Set the window icon (also used for alt-tab). TODO: Implement for linux/unix
+	// Set the window icon (also used for alt-tab)
 #ifdef WIN32
 	HICON hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
 	if(hIcon)

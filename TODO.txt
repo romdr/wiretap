@@ -1,10 +1,12 @@
 TODO:
+- PCH for viewer
+- Make profiler lib config (would be nice to just include a .h without having to change project config when integrating to a project)
 - Align functions/timings
-- Scroll left/right entire view when reaching 1st/last frames
 - Display standard deviation line and text
 - Horizontal scale tweakable (1 second by default, can zoom out)
 - Mouse scroll / shift + mouse scroll to zoom in/out height and frames rendered
 - Update m_WindowWidth/Height when resizing the window
+- Redraw when regain focus, move window, resize
 - Key to take screenshot
 - Key to save entire dump
 - Key to load dump
