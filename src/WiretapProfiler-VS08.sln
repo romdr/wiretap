@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WiretapProfiler", "src\WiretapProfiler.vcproj", "{68C9CBB8-DEB6-4740-AAFA-853A8C999C8B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example", "src\Example.vcproj", "{73A5B520-BEE1-4221-B260-7B51B811A64C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{68C9CBB8-DEB6-4740-AAFA-853A8C999C8B}.Debug|Win32.Build.0 = Debug|Win32
 		{68C9CBB8-DEB6-4740-AAFA-853A8C999C8B}.Release|Win32.ActiveCfg = Release|Win32
 		{68C9CBB8-DEB6-4740-AAFA-853A8C999C8B}.Release|Win32.Build.0 = Release|Win32
+		{73A5B520-BEE1-4221-B260-7B51B811A64C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{73A5B520-BEE1-4221-B260-7B51B811A64C}.Debug|Win32.Build.0 = Debug|Win32
+		{73A5B520-BEE1-4221-B260-7B51B811A64C}.Release|Win32.ActiveCfg = Release|Win32
+		{73A5B520-BEE1-4221-B260-7B51B811A64C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

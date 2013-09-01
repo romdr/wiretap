@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="WiretapProfiler"
-	ProjectGUID="{68C9CBB8-DEB6-4740-AAFA-853A8C999C8B}"
-	RootNamespace="WiretapProfiler"
+	Name="Example"
+	ProjectGUID="{73A5B520-BEE1-4221-B260-7B51B811A64C}"
+	RootNamespace="Example"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -20,7 +20,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="../output/$(ProjectName)/$(PlatformName)/$(ConfigurationName)"
 			IntermediateDirectory="../temp/$(ProjectName)/$(PlatformName)/$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			CharacterSet="1"
 			>
 			<Tool
@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="Common;&quot;..\external\sfml-2.1-windows-vc9-32bits\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;SFML_STATIC;"
+				AdditionalIncludeDirectories="Common;Profiler"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -60,13 +60,14 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				LinkLibraryDependencies="true"
-				AdditionalDependencies="sfml-system-s-d.lib sfml-network-s-d.lib"
-				AdditionalLibraryDirectories="..\external\sfml-2.1-windows-vc9-32bits\lib;"
+				Name="VCLinkerTool"
+				GenerateDebugInformation="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -78,6 +79,9 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -85,7 +89,7 @@
 			Name="Release|Win32"
 			OutputDirectory="../output/$(ProjectName)/$(PlatformName)/$(ConfigurationName)"
 			IntermediateDirectory="../temp/$(ProjectName)/$(PlatformName)/$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -109,14 +113,14 @@
 				Optimization="3"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="Common;&quot;..\external\sfml-2.1-windows-vc9-32bits\include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;SFML_STATIC;"
+				AdditionalIncludeDirectories="Common;Profiler"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				DebugInformationFormat="3"
-				DisableSpecificWarnings="4127;4100"
+				DisableSpecificWarnings="4100;4127"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -128,13 +132,13 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				LinkLibraryDependencies="true"
-				AdditionalDependencies="sfml-system-s.lib sfml-network-s.lib"
-				AdditionalLibraryDirectories="..\external\sfml-2.1-windows-vc9-32bits\lib;"
+				Name="VCLinkerTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -146,37 +150,27 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{68C9CBB8-DEB6-4740-AAFA-853A8C999C8B}"
+			CopyLocal="false"
+			CopyLocalDependencies="false"
+			CopyLocalSatelliteAssemblies="false"
+			RelativePathToProject=".\src\WiretapProfiler.vcproj"
+		/>
 	</References>
 	<Files>
-		<Filter
-			Name="Common"
+		<File
+			RelativePath="Example\main.cpp"
 			>
-			<File
-				RelativePath=".\Common\WiretapUtils.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Common\WiretapUtils.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Profiler"
-			>
-			<File
-				RelativePath=".\Profiler\WiretapProfiler.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Profiler\WiretapProfiler.h"
-				>
-			</File>
-		</Filter>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

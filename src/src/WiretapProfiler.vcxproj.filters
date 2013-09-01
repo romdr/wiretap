@@ -15,7 +15,6 @@
     <ClCompile Include="Common\WiretapUtils.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Profiler\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Profiler\WiretapProfiler.h">
