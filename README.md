@@ -62,7 +62,7 @@ Each captured profile point (function call, unnamed scope) is displayed on the l
 
 Everything updates in real-time but it's possible to pause the display (press spacebar) (data is still being captured) and rewind and step over the frames to take the time to inspect them by pressing [n]ext or [p]revious. The selected frame is outlined in gray.
 
-[![wiretap-viewer](http://www.shazbits.com/images/wiretap-viewer.png)]
+![wiretap-viewer](http://www.shazbits.com/images/wiretap-viewer.png)
 
 ## Additional information
 
